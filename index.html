@@ -1,0 +1,212 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Estoque da tia Linduca</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="topo">
+    <div>
+      <h1>Estoque da tia Linduca</h1>
+      <p>Controle de produtos, pedidos e vendas</p>
+    </div>
+    <span class="etiqueta">Meu negócio</span>
+  </header>
+
+  <nav class="navegacao">
+    <button class="aba ativa" data-tela="painel">Painel</button>
+    <button class="aba" data-tela="produtos">Produtos</button>
+    <button class="aba" data-tela="pedidos">Registrar pedido</button>
+    <button class="aba" data-tela="relatorios">Relatórios</button>
+  </nav>
+
+  <main>
+    <section id="painel" class="tela ativa">
+      <h2>Visão geral</h2>
+      <div class="resumo">
+        <article class="cartao">
+          <span>Produtos cadastrados</span>
+          <strong id="totalProdutos">0</strong>
+        </article>
+        <article class="cartao">
+          <span>Unidades em estoque</span>
+          <strong id="totalUnidades">0</strong>
+        </article>
+        <article class="cartao">
+          <span>Valor de custo do estoque</span>
+          <strong id="valorEstoque">R$ 0,20</strong>
+        </article>
+        <article class="cartao">
+          <span>Vendas de hoje</span>
+          <strong id="vendasHoje">R$ 0,20</strong>
+        </article>
+      </div>
+
+      <div class="painel-branco">
+        <h3>Estoque baixo</h3>
+        <div id="estoqueBaixo" class="lista-vazia">Nenhum produto com estoque baixo.</div>
+      </div>
+
+      <div class="painel-branco">
+        <h3>Últimos pedidos</h3>
+        <div id="ultimosPedidos" class="lista-vazia">Nenhum pedido registrado.</div>
+      </div>
+    </section>
+
+    <section id="produtos" class="tela">
+      <h2>Cadastro de produtos</h2>
+
+      <form id="formProduto" class="formulario">
+        <input type="hidden" id="produtoId">
+
+        <label>
+          Nome do produto
+          <input id="nomeProduto" type="text" placeholder="Ex.: Bolo de chocolate" required>
+        </label>
+
+        <label>
+          Sabor ou descrição
+          <input id="saborProduto" type="text" placeholder="Ex.: Chocolate">
+        </label>
+
+        <div class="grade-campos">
+          <label>
+            Custo unitário (R$)
+            <input id="custoProduto" type="number" min="0" step="0.01" placeholder="0,00" required>
+          </label>
+
+          <label>
+            Preço de venda (R$)
+            <input id="precoProduto" type="number" min="0.01" step="0.01" placeholder="0,00" required>
+          </label>
+
+          <label>
+            Quantidade em estoque
+            <input id="quantidadeProduto" type="number" min="0" step="1" value="0" required>
+          </label>
+        </div>
+
+        <div class="acoes">
+          <button class="botao principal" type="submit" id="botaoSalvarProduto">Cadastrar produto</button>
+          <button class="botao secundario" type="button" id="cancelarEdicao" hidden>Cancelar edição</button>
+        </div>
+      </form>
+
+      <div class="barra-lista">
+        <h3>Produtos cadastrados</h3>
+        <input id="buscarProduto" type="search" placeholder="Buscar produto...">
+      </div>
+      <div id="listaProdutos"></div>
+    </section>
+
+    <section id="pedidos" class="tela">
+      <h2>Registrar pedido</h2>
+      <p class="ajuda">Adicione os produtos ao pedido, confira os valores e escolha como o cliente pagou.</p>
+
+      <div class="painel-branco">
+        <div class="grade-campos">
+          <label>
+            Produto
+            <select id="produtoPedido">
+              <option value="">Selecione um produto</option>
+            </select>
+          </label>
+
+          <label>
+            Quantidade
+            <input id="quantidadePedido" type="number" min="1" step="1" value="1">
+          </label>
+        </div>
+        <button id="adicionarItem" type="button" class="botao principal">Adicionar ao pedido</button>
+      </div>
+
+      <div class="painel-branco">
+        <h3>Itens do pedido</h3>
+        <div id="itensPedido" class="lista-vazia">Nenhum item adicionado.</div>
+
+        <div class="total-pedido">
+          <span>Total do pedido</span>
+          <strong id="totalPedido">R$ 0,00</strong>
+        </div>
+
+        <label class="campo-pagamento">
+          Forma de pagamento
+          <select id="formaPagamento" required>
+            <option value="Pix">Pix</option>
+            <option value="Cartão de débito">Cartão de débito</option>
+            <option value="Cartão de crédito">Cartão de crédito</option>
+            <option value="Dinheiro">Dinheiro</option>
+          </select>
+        </label>
+
+        <label class="campo-pagamento">
+          Observação (opcional)
+          <input id="observacaoPedido" type="text" placeholder="Ex.: Nome do cliente ou detalhes">
+        </label>
+
+        <button id="finalizarPedido" class="botao sucesso" type="button">Confirmar venda</button>
+      </div>
+
+      <div class="painel-branco">
+        <h3>Histórico de pedidos</h3>
+        <div id="historicoPedidos" class="lista-vazia">Nenhum pedido registrado.</div>
+      </div>
+    </section>
+
+    <section id="relatorios" class="tela">
+      <h2>Relatórios de vendas</h2>
+      <div class="painel-branco">
+        <label>
+          Período do relatório
+          <select id="periodoRelatorio">
+            <option value="dia">Hoje</option>
+            <option value="semana">Esta semana</option>
+            <option value="mes">Este mês</option>
+            <option value="todos">Todo o período</option>
+          </select>
+        </label>
+
+        <div class="resumo relatorio-resumo">
+          <article class="cartao">
+            <span>Pedidos</span>
+            <strong id="relatorioPedidos">0</strong>
+          </article>
+          <article class="cartao">
+            <span>Faturamento</span>
+            <strong id="relatorioFaturamento">R$ 0,00</strong>
+          </article>
+          <article class="cartao">
+            <span>Custo dos produtos vendidos</span>
+            <strong id="relatorioCusto">R$ 0,00</strong>
+          </article>
+          <article class="cartao">
+            <span>Lucro bruto estimado</span>
+            <strong id="relatorioLucro">R$ 0,00</strong>
+          </article>
+        </div>
+
+        <p class="ajuda">O lucro exibido é uma estimativa bruta: não desconta despesas como embalagens, energia, entrega ou taxas de cartão.</p>
+      </div>
+
+      <div class="painel-branco">
+        <h3>Faturamento por forma de pagamento</h3>
+        <div id="relatorioPagamentos"></div>
+      </div>
+
+      <div class="painel-branco">
+        <h3>Pedidos do período</h3>
+        <div id="relatorioLista"></div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <p>Estoque da tia Linduca · Os dados ficam salvos neste navegador.</p>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
